@@ -9,7 +9,7 @@ const Comments = () => {
         <textarea
           name=""
           id=""
-          className=" w-full rounded-2xl bg-white"
+          className=" w-full rounded-2xl outline-none p-4 text-md bg-white"
           rows={4}
         />
         <button className=" bg-blue-800 text-white px-4 py-2 rounded-2xl">
