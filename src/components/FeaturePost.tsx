@@ -4,7 +4,7 @@ import React from "react";
 
 const FeaturePost = () => {
   return (
-    <div className=" grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 mt-8 ">
+    <div className=" grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 mt-8 ">
       {/* left side */}
       <div className=" flex flex-col gap-4">
         <Image

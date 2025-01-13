@@ -15,7 +15,7 @@ const Introduction = () => {
           dicta, quos fugit doloremque
         </p>
       </div>
-      <Link className=" hidden md:block relative" href="/">
+      <Link className=" hidden md:block relative" href="write">
         <svg
           width="200"
           height="200"

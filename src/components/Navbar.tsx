@@ -14,7 +14,10 @@ const Navbar = () => {
   return (
     <div className=" w-full h-16 md:h-20 flex items-center justify-between">
       {/* logo */}
-      <div className=" flex items-center gap-2 text-2xl font-semibold">
+      <Link
+        href={"/"}
+        className=" hover:text-gray-700 flex items-center gap-2 text-2xl font-semibold"
+      >
         {/* <Image
           src={"/next.svg"}
           height={32}
@@ -23,7 +26,7 @@ const Navbar = () => {
           className=" h-[32px] w-[32px]"
         /> */}
         <span>Talal blog</span>
-      </div>
+      </Link>
       {/* desktop */}
       <div className=" hidden md:flex font-medium text-lg items-center gap-8 xl:gap-12">
         <Link className=" " href={"/"}>

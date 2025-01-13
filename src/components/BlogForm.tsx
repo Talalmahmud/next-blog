@@ -23,7 +23,7 @@ const BlogForm = () => {
     );
   }
   return (
-    <div className="  flex flex-col gap-6">
+    <div className=" min-h-screen flex flex-col gap-6 pb-20">
       <p className=" text-xl">Create A New Post</p>
       <div>
         {" "}
@@ -42,8 +42,13 @@ const BlogForm = () => {
         placeholder="Add Post Title"
       />
       <div className=" flex items-center gap-4">
-        <p className=" text-md ">Choose a category:</p>
-        <select className=" outline-none px-4 py-2 bg-white text-black rounded-2xl">
+        <label htmlFor="category" className=" text-md ">
+          Choose a category:
+        </label>
+        <select
+          id="category"
+          className=" outline-none px-4 py-2 bg-white text-black rounded-2xl"
+        >
           <option value="">Web Design</option>
           <option value="">SEO</option>
           <option value="">Database</option>
@@ -58,7 +63,14 @@ const BlogForm = () => {
         placeholder="Add short descriptions"
         className="px-4 py-2 text-md outline-none bg-white rounded-2xl"
       />
-      <CustomReactQuill value={value} setValue={setValue} />
+      <CustomReactQuill value={value} onChange={setValue} />
+
+      <div>
+        {" "}
+        <button className=" w-32 bg-blue-800 text-white px-4 py-2 rounded-2xl">
+          Submit
+        </button>
+      </div>
     </div>
   );
 };

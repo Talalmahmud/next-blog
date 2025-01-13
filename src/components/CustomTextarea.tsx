@@ -1,8 +1,6 @@
 // filepath: /Users/talalmahmud/Desktop/my project/next-project/Front-End/blog/src/components/CustomReactQuill.jsx
-import dynamic from "next/dynamic";
-import "react-quill/dist/quill.snow.css";
-
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
 const CustomReactQuill = ({
   value,
@@ -11,7 +9,13 @@ const CustomReactQuill = ({
   value: any;
   onChange: any;
 }) => {
-  return <ReactQuill value={value} onChange={onChange} />;
+  return (
+    <ReactQuill
+      className=" bg-white rounded-2xl min-h-[400px]"
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
 export default CustomReactQuill;
