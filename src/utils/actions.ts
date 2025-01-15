@@ -2,6 +2,7 @@
 import { auth, clerkClient, getAuth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { Roles } from "@/types/global";
+import { redirect } from "next/navigation";
 
 export const getClerkUserById = async (id: string) => {
   const findExistUser = await prisma.user.findUnique({
@@ -124,9 +125,25 @@ export const createPost = async (
 export const getBlog = async () => {
   try {
     const blogs = await prisma.post.findMany({
-      where: { is_featrued: false },
       include: {
         Category: true, // Include the related category data
+      },
+    });
+
+    return blogs;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const updatePostStatus = async (postId: string, newStatus: boolean) => {
+  try {
+    const blogs = await prisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        is_publish: newStatus,
       },
     });
 
@@ -139,7 +156,7 @@ export const getBlog = async () => {
 export const getFeatureBlog = async () => {
   try {
     const blogs = await prisma.post.findMany({
-      where: { is_featrued: true },
+      where: { is_featrued: true, is_publish: true },
       include: {
         Category: true, // Include the related category data
       },
@@ -154,7 +171,7 @@ export const getFeatureBlog = async () => {
 export const getNotFeatureBlog = async () => {
   try {
     const blogs = await prisma.post.findMany({
-      where: { is_featrued: false },
+      where: { is_featrued: false, is_publish: true },
       include: {
         Category: true, // Include the related category data
       },
@@ -163,6 +180,114 @@ export const getNotFeatureBlog = async () => {
     return blogs;
   } catch (error) {
     return error;
+  }
+};
+
+export const getBlogsByCategory = async (categoryId: string) => {
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        categoryId, // Filters posts by the category ID
+        is_publish: true,
+      },
+      include: {
+        Category: true, // Include category data (optional)
+      },
+    });
+    return posts;
+  } catch (error) {
+    console.error("Error fetching posts by categoryId:", error);
+    throw error;
+  }
+};
+
+export const searchBlogByTitleText = async (searchTxt: string) => {
+  try {
+    const res = await prisma.post.findMany({
+      where: {
+        is_publish: true,
+        title: {
+          contains: searchTxt,
+          mode: "insensitive",
+        },
+      },
+      select: {
+        id: true,
+        title: true,
+        createdAt: true,
+      },
+    });
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const visiterCount = async (postId: string) => {
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+
+    if (!post) {
+      throw new Error("Post not found");
+    }
+
+    const res = await prisma.post.update({
+      where: { id: postId },
+      data: {
+        visited: post.visited + 1,
+      },
+    });
+
+    return res;
+  } catch (error) {
+    console.error("Error updating visitor count:", error);
+    throw error;
+  }
+};
+
+export const deletePost = async (postId: string) => {
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+
+    if (!post) {
+      throw new Error("Post not found");
+    }
+
+    await prisma.post.delete({
+      where: {
+        id: postId,
+      },
+    });
+
+    redirect("/");
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    throw error;
+  }
+};
+
+export const getPopularBlogs = async (amount: number) => {
+  try {
+    const popularBlogs = await prisma.post.findMany({
+      where: {
+        visited: {
+          gt: amount,
+        },
+        is_publish: true,
+      },
+      include: {
+        Category: true,
+      },
+    });
+    console.log(popularBlogs);
+    return popularBlogs;
+  } catch (error) {
+    console.error("Error fetching popular blogs:", error);
+    throw error;
   }
 };
 
