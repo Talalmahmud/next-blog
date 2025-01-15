@@ -10,7 +10,9 @@ body {
 .animateButton {
   animation-duration: 10000ms;
 }
-
+.no-scroll {
+  overflow: hidden;
+}
 .ql-container {
   border: none !important;
 }

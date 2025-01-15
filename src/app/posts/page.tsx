@@ -14,8 +14,6 @@ export default async function Page() {
             Development
           </p>
         </div>
-        <Blogitem />
-        <Blogitem /> <Blogitem /> <Blogitem /> <Blogitem />
       </div>
       {/* left */}
       <div className=" px-4 mt-10 sticky max-w-[200px] flex flex-col gap-8 top-8 h-max">

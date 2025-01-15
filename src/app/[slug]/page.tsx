@@ -1,10 +1,14 @@
 import Comments from "@/components/Comments";
 import { prisma } from "@/lib/prisma";
-import { getClerkUser, getClerkUserById } from "@/utils/actions";
+import { visiterCount } from "@/utils/actions";
 import Image from "next/image";
 import AuthUserData from "../../components/AuthUserData";
 import { getTimeDifference } from "@/lib/common";
 import BlogContent from "@/components/BlogContent";
+import Link from "next/link";
+import CategoryFilter from "@/components/CategoryFilter";
+import DeletePost from "@/components/DeletePost";
+import SearchBlog from "@/components/SearchBlog";
 
 export default async function Page({
   params,
@@ -21,8 +25,12 @@ export default async function Page({
     },
   });
 
+  if (blog) {
+    await visiterCount(blog?.id);
+  }
+
   return (
-    <div className=" pb-10">
+    <div className=" pb-40">
       {/* top */}
       <div className=" flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-20 justify-between">
         <div className=" flex flex-col gap-6">
@@ -88,8 +96,7 @@ export default async function Page({
             </div>
 
             <p className=" text-sm text-pretty text-gray-500 whitespace-nowrap">
-              Lorem accusamus fugit. Esse, nam. Lorem accusamus fugit. Esse,
-              nam.
+              Visited: <span className=" font-semibold">({blog?.visited})</span>
             </p>
             <div className=" flex items-center gap-4">
               <Image
@@ -127,41 +134,11 @@ export default async function Page({
                 </button>
               </div>
 
-              <div className=" flex items-center gap-4">
-                <Image
-                  src={"/delete.svg"}
-                  height={32}
-                  width={24}
-                  className=" h-10 w-6 "
-                  alt=""
-                />
-
-                <button className=" text-md text-red-400 hover:underline cursor-pointer">
-                  delete item
-                </button>
-              </div>
+              <DeletePost id={blog?.id || ""} />
             </div>
           </div>
-          <div className=" flex flex-col gap-2 text-sm text-blue-950">
-            <p>Categories</p>
-            <p>All</p>
-            <p className=" hover:text-blue-800 underline">Web Design</p>
-            <p className=" hover:text-blue-800 underline">SEO</p>{" "}
-            <p className=" hover:text-blue-800 underline">Database</p>{" "}
-            <p className=" hover:text-blue-800 underline">Marketing</p>
-          </div>
-
-          <div className=" flex flex-col gap-2 text-sm text-blue-950">
-            <p>Search</p>
-            <div className=" bg-gray-100 p-2 rounded-full flex items-center gap-4">
-              <Image src={"/search.svg"} height={16} width={16} alt="" />
-              <input
-                type="text"
-                className=" bg-transparent outline-none text-[12px]"
-                placeholder="Search"
-              />
-            </div>
-          </div>
+          <SearchBlog />
+          <CategoryFilter />
         </div>
       </div>
     </div>

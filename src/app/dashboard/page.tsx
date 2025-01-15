@@ -1,4 +1,5 @@
 import Category from "@/components/add/Category";
+import PostTable from "@/components/dashboard/PostTable";
 import { checkRole } from "@/utils/actions";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -13,6 +14,7 @@ const page = async (props: Props) => {
   return (
     <div>
       <Category />
+      <PostTable />
     </div>
   );
 };

@@ -3,53 +3,38 @@ import CategoryFilter from "@/components/CategoryFilter";
 import Comments from "@/components/Comments";
 import Postitem from "@/components/Postitem";
 import SearchBlog from "@/components/SearchBlog";
-import { getBlogsByCategory } from "@/utils/actions";
+import { getBlogsByCategory, getPopularBlogs } from "@/utils/actions";
 import Image from "next/image";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const slug = (await params).slug;
-
-  const blog = await getBlogsByCategory(slug);
+export default async function Page() {
+  const blog = await getPopularBlogs(7);
 
   return (
     <div className=" w-full flex justify-between gap-10">
       {/* right */}
 
-      <div className=" flex flex-col gap-6">
-        <div className="inline-flex w-auto">
-          <p className="rounded-full px-6 py-2 bg-blue-800 text-white text-sm md:text-base font-semibold shadow-md hover:bg-blue-700 cursor-pointer transition-all duration-300">
-            {slug}
-          </p>
+      {blog.length > 0 ? (
+        <div className=" flex flex-col gap-6">
+          {blog?.map((item: any, index: any) => (
+            <Blogitem
+              key={index}
+              postId={item?.id}
+              authorId={item?.authorId}
+              title={item?.title}
+              createdAt={item?.createdAt}
+              shortDesc={item?.short_description}
+            />
+          ))}
         </div>
-        {blog?.map((item: any, index: any) => (
-          <Blogitem
-            key={index}
-            postId={item?.id}
-            authorId={item?.authorId}
-            title={item?.title}
-            createdAt={item?.createdAt}
-            shortDesc={item?.short_description}
-          />
-        ))}
-      </div>
+      ) : (
+        <p className=" text-[16px] flex justify-center items-center min-h-screen w-full">
+          No popular blog is now.
+        </p>
+      )}
       {/* left */}
       <div className=" px-4 mt-10 sticky max-w-[200px] flex flex-col gap-8 top-8 h-max">
-        <div className=" flex flex-col gap-2 text-sm text-blue-950">
-          <p>Search</p>
-          <div className=" bg-gray-100 p-2 rounded-full flex items-center gap-4">
-            <Image src={"/search.svg"} height={16} width={16} alt="" />
-            <input
-              type="text"
-              className=" bg-transparent outline-none text-[12px]"
-              placeholder="Search"
-            />
-          </div>
-        </div>
-        <SearchBlog/>
+        <SearchBlog />
+
         <CategoryFilter />
         {/* <div className="flex flex-col gap-2 text-sm font-semibold text-blue-950">
           <p>Filters</p>
