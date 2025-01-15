@@ -3,6 +3,7 @@ import { getCategory } from "@/utils/actions";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState, useTransition } from "react";
+import SearchBlog from "./SearchBlog";
 
 const Category = () => {
   const [category, setCategory] = useState<any>([]);
@@ -64,14 +65,7 @@ const Category = () => {
         </Link> */}
           </div>
           <span className=" text-2xl font-semibold ">|</span>
-          <div className=" bg-gray-100 p-2 rounded-full flex items-center gap-4">
-            <Image src={"/search.svg"} height={16} width={16} alt="" />
-            <input
-              type="text"
-              className=" bg-transparent outline-none text-[12px]"
-              placeholder="Search"
-            />
-          </div>
+          <SearchBlog />
         </div>
       )}
     </>

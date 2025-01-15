@@ -20,12 +20,10 @@ const Introduction = () => {
     <div className=" flex justify-between items-center">
       <div className="">
         <p className=" text-3xl md:text-5xl xl:text-6xl font-semibold">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+          Fuel Your Curiosity, Embrace the Knowledge
         </p>
-        <p className=" mt-4 text-md md:text-xl">
-          {" "}
-          Inventore placeat ipsam ab corrupti cum quisquam nihil voluptate
-          dicta, quos fugit doloremque
+        <p className=" mt-4 italic text-md md:text-xl">
+          Thought-provoking articles that enrich your mind.
         </p>
       </div>
       <Link className=" hidden md:block relative" href="write">

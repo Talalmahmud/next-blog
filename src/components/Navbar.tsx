@@ -7,10 +7,18 @@ import {
 } from "@clerk/clerk-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (open) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [open]);
+
   return (
     <div className=" w-full h-16 md:h-20 flex items-center justify-between">
       {/* logo */}
@@ -25,20 +33,21 @@ const Navbar = () => {
           alt=""
           className=" h-[32px] w-[32px]"
         /> */}
-        <span>Talal blog</span>
+        <span>E-CRi Blog</span>
       </Link>
       {/* desktop */}
       <div className=" hidden md:flex font-medium text-lg items-center gap-8 xl:gap-12">
         <Link className=" " href={"/"}>
           Home
         </Link>
-        <Link className=" " href={"/"}>
+        <Link className=" " href={"/trending"}>
           Trending
         </Link>
-        <Link className=" " href={"/"}>
+        <Link className=" " href={"/popular"}>
           Popular
         </Link>
-        <Link className=" " href={"/"}>
+
+        <Link className=" " href={"/about-us"}>
           About
         </Link>
         <SignedOut>
@@ -79,20 +88,21 @@ const Navbar = () => {
         )}
       </div>
       <div
-        className={` absolute bg-white top-16 min-h-screen w-full text-lg font-semibold transition-all flex flex-col justify-center items-center gap-2 ${
+        className={` fixed z-20 bg-white top-16 min-h-screen w-full text-lg font-semibold transition-all flex flex-col justify-center items-center gap-2 ${
           open ? " -right-0" : " -right-[100%]"
         }`}
       >
         <Link className=" " href={"/"}>
           Home
         </Link>
-        <Link className=" " href={"/"}>
+        <Link className=" " href={"/trending"}>
           Trending
         </Link>
-        <Link className=" " href={"/"}>
+        <Link className=" " href={"/popular"}>
           Popular
         </Link>
-        <Link className=" " href={"/"}>
+
+        <Link className=" " href={"/about-us"}>
           About
         </Link>
         <SignedOut>

@@ -7,9 +7,9 @@ const BreadCrum = () => {
       <Link className=" hover:underline" href={"/"}>
         Home
       </Link>
-      <span className="">:</span>
+      <span className=" font-semibold">-</span>
       <Link className="" href={"/"}>
-        Blog Artical's
+        Blog Articale's
       </Link>
     </div>
   );

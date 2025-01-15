@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Postitem from "./Postitem";
-import { getBlog, getFeatureBlog } from "@/utils/actions";
+import { getFeatureBlog } from "@/utils/actions";
 import Link from "next/link";
 import Image from "next/image";
 import AuthUserData from "./AuthUserData";
@@ -12,9 +11,8 @@ const RecentPost = () => {
 
   const getFeaturePost = async () => {
     try {
-      const res = await getBlog();
+      const res = await getFeatureBlog();
       setBlogList(res);
-      console.log(res);
     } catch (error) {
       console.log(error);
     }
@@ -26,7 +24,7 @@ const RecentPost = () => {
     <div className=" mt-8 flex flex-col gap-6">
       <p className=" text-gray-600 text-lg md:text-xl">Recent Posts</p>
       {blogList?.map((item: any, index: any) => (
-        <div className=" flex flex-col md:flex-row gap-4">
+        <div key={index} className=" flex flex-col md:flex-row gap-4">
           <Image
             src={"/website.png"}
             height={100}

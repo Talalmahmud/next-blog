@@ -12,7 +12,6 @@ const FeaturePost = () => {
     try {
       const res = await getFeatureBlog();
       setFeatureList(res);
-      console.log(res);
     } catch (error) {
       console.log(error);
     }
@@ -31,7 +30,7 @@ const FeaturePost = () => {
           className=" object-cover w-full rounded-2xl"
           alt=""
         />
-        <div className=" flex items-center gap-2">
+        <div className=" flex  gap-2">
           <h1 className=" font-semibold lg:text-lg">01.</h1>
           <Link
             href={`/${featureList[0]?.id}`}
@@ -39,7 +38,7 @@ const FeaturePost = () => {
           >
             {featureList[0]?.title}
           </Link>
-          <span className=" text-[12px] text-gray-400">
+          <span className=" text-[12px] whitespace-nowrap text-gray-500">
             {getTimeDifference(featureList[0]?.createdAt)}
           </span>
         </div>
@@ -65,11 +64,16 @@ const FeaturePost = () => {
             <div className=" flex flex-col gap-2">
               <div className=" flex text-sm items-center gap-2">
                 <h1 className=" font-semibold">0{index + 1}.</h1>
-                <p className=" text-blue-800 hover:underline">{item?.title}</p>
-                <span> {getTimeDifference(item.createdAt)}</span>
+                <p className=" text-blue-800 hover:underline">
+                  {item?.title.slice(0, 20)}
+                </p>
+                <span className="text-gray-500">
+                  {" "}
+                  {getTimeDifference(item.createdAt)}
+                </span>
               </div>
-              <p className=" text-base sm:text-lg   md:text-2xl lg:text-sm font-semibold ">
-                {item?.short_description}
+              <p className=" text-base sm:text-lg  md:text-2xl lg:text-sm font-semibold ">
+                {item?.short_description.slice(0, 30)}
               </p>
             </div>
           </Link>
