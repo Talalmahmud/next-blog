@@ -1,10 +1,27 @@
+"use client";
+import { getTimeDifference } from "@/lib/common";
+import { getFeatureBlog } from "@/utils/actions";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const FeaturePost = () => {
+  const [featureList, setFeatureList] = useState<any>([]);
+
+  const getFeaturePost = async () => {
+    try {
+      const res = await getFeatureBlog();
+      setFeatureList(res);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getFeaturePost();
+  }, []);
   return (
-    <div className=" grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 mt-8 ">
+    <div className="  grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 mt-8 ">
       {/* left side */}
       <div className=" flex flex-col gap-4">
         <Image
@@ -17,20 +34,47 @@ const FeaturePost = () => {
         <div className=" flex items-center gap-2">
           <h1 className=" font-semibold lg:text-lg">01.</h1>
           <Link
-            href={"/"}
+            href={`/${featureList[0]?.id}`}
             className=" text-blue-800 lg:text-lg hover:underline"
           >
-            Web Design
+            {featureList[0]?.title}
           </Link>
-          <span>2 days ago</span>
+          <span className=" text-[12px] text-gray-400">
+            {getTimeDifference(featureList[0]?.createdAt)}
+          </span>
         </div>
         <p className=" text-xl lg:text-3xl font-semibold md:font-bold">
-          recusandae consequatur enim ratione provident nesciunt temporibus?
+          {featureList[0]?.short_description}
         </p>
       </div>
       {/* right side */}
       <div className="flex flex-col gap-4">
-        <div className=" flex gap-4">
+        {featureList.slice(0)?.map((item: any, index: number) => (
+          <Link
+            href={`/${item.id}`}
+            key={index}
+            className=" flex gap-4 hover:bg-[#e6e6ff]/90 hover:shadow-md rounded-2xl"
+          >
+            <Image
+              src={"/website.png"}
+              height={100}
+              width={100}
+              className=" object-cover aspect-video rounded-2xl w-1/3"
+              alt=""
+            />
+            <div className=" flex flex-col gap-2">
+              <div className=" flex text-sm items-center gap-2">
+                <h1 className=" font-semibold">0{index + 1}.</h1>
+                <p className=" text-blue-800 hover:underline">{item?.title}</p>
+                <span> {getTimeDifference(item.createdAt)}</span>
+              </div>
+              <p className=" text-base sm:text-lg   md:text-2xl lg:text-sm font-semibold ">
+                {item?.short_description}
+              </p>
+            </div>
+          </Link>
+        ))}
+        {/* <div className=" flex gap-4">
           <Image
             src={"/website.png"}
             height={100}
@@ -92,7 +136,7 @@ const FeaturePost = () => {
               recusandae consequatur enim ratione provident nesciunt temporibus?
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

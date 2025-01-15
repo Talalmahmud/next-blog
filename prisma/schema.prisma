@@ -1,0 +1,55 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  clerk_id  String    @unique
+  img       String?
+  posts     Post[]
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Post {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  cover_img         String?
+  title             String
+  short_description String
+  content           String
+  is_featrued       Boolean   @default(false)
+  visited           Int       @default(0)
+  authorId          String    @db.ObjectId
+  author            User      @relation(fields: [authorId], references: [id])
+  categoryId        String    @db.ObjectId
+  Category          Category? @relation(fields: [categoryId], references: [id])
+  comments          Comment[]
+  is_publish        Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model Category {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  comment   String
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade) // Comment belongs to a user
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -1,8 +1,21 @@
+"use client";
+import addUser, { getClerkUser } from "@/utils/actions";
+import { clerkClient } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 const Introduction = () => {
+  // const addNewUser = async () => {
+  //   try {
+  //     const res = await addUser();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  useEffect(() => {
+    getClerkUser();
+  }, []);
   return (
     <div className=" flex justify-between items-center">
       <div className="">

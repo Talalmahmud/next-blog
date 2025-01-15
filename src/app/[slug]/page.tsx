@@ -1,5 +1,10 @@
 import Comments from "@/components/Comments";
+import { prisma } from "@/lib/prisma";
+import { getClerkUser, getClerkUserById } from "@/utils/actions";
 import Image from "next/image";
+import AuthUserData from "../../components/AuthUserData";
+import { getTimeDifference } from "@/lib/common";
+import BlogContent from "@/components/BlogContent";
 
 export default async function Page({
   params,
@@ -7,34 +12,32 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const slug = (await params).slug;
+  const blog = await prisma.post.findUnique({
+    where: {
+      id: slug,
+    },
+    include: {
+      Category: true,
+    },
+  });
+
   return (
     <div className=" pb-10">
       {/* top */}
-      <div className=" flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-20">
+      <div className=" flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-20 justify-between">
         <div className=" flex flex-col gap-6">
           <p className=" text-2xl md:text-4xl xl:text-5xl font-semibold">
-            recusandae consequatur enim ratione provident nesciunt temporibus?
+            {blog?.title}
           </p>{" "}
           <div className=" flex items-center text-sm md:text-md gap-2 text-gray-400">
             <p>Written By</p>
-            <p className=" text-blue-800 lg:text-lg hover:underline">Jon dev</p>
-            <p className=" text-blue-800">Web Design</p>
+            <AuthUserData id={blog?.authorId} />
 
-            <span>2 days ago</span>
+            <p className=" text-blue-800">{blog?.Category?.name}</p>
+
+            <span>{getTimeDifference(blog?.createdAt?.toString() || "")}</span>
           </div>
-          <p className=" text-sm text-gray-500">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae
-            suscipit, vitae corporis architecto ipsa aliquam possimus rerum
-            magnam dolore. Debitis possimus vero excepturi aspernatur obcaecati
-            labore corporis dolorum, velit temporibus.magnam dolore. Debitis
-            possimus vero excepturi aspernatur obcaecati labore corporis
-            dolorum, velit temporibus. labore corporis dolorum, velit
-            temporibus.magnam dolore. Debitis possimus vero excepturi aspernatur
-            obcaecati labore corporis dolorum, velit temporibus. labore corporis
-            dolorum, velit temporibus.magnam dolore. Debitis possimus vero
-            excepturi aspernatur obcaecati labore corporis dolorum, velit
-            temporibus.
-          </p>
+          <p className=" text-sm text-gray-500">{blog?.short_description}</p>
         </div>
         <Image
           src={"/website.png"}
@@ -46,27 +49,10 @@ export default async function Page({
       </div>
       <div className=" w-full mt-10 flex gap-10">
         {/* right */}
+
         <div className=" flex flex-col  gap-4 lg:gap-8">
-          <p className=" text-sm text-gray-500">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae
-            suscipit, vitae corporis architecto ipsa aliquam possimus rerum
-            magnam dolore. Debitis possimus vero excepturi aspernatur obcaecati
-            labore corporis dolorum, velit temporibus. Lorem ipsum, dolor sit
-            amet consectetur adipisicing elit. Molestiae suscipit, vitae
-            corporis architecto ipsa aliquam possimus rerum magnam dolore.
-            Debitis possimus vero excepturi aspernatur obcaecati labore corporis
-            dolorum, velit temporibus.
-          </p>
-          <p className=" text-sm text-gray-500">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae
-            suscipit, vitae corporis architecto ipsa aliquam possimus rerum
-            magnam dolore. Debitis possimus vero excepturi aspernatur obcaecati
-            labore corporis dolorum, velit temporibus. Lorem ipsum, dolor sit
-            amet consectetur adipisicing elit. Molestiae suscipit, vitae
-            corporis architecto ipsa aliquam possimus rerum magnam dolore.
-            Debitis possimus vero excepturi aspernatur obcaecati labore corporis
-            dolorum, velit temporibus.
-          </p>
+          <BlogContent content={blog?.content || ""} />
+
           <Image
             src={"/website.png"}
             height={100}
@@ -74,7 +60,8 @@ export default async function Page({
             className="  object-cover w-full h-[400px] aspect-video rounded-2xl"
             alt=""
           />
-          <p className=" text-sm text-gray-500">
+
+          {/* <p className=" text-sm text-gray-500">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae
             suscipit, vitae corporis architecto ipsa aliquam possimus rerum
             magnam dolore. Debitis possimus vero excepturi aspernatur obcaecati
@@ -83,38 +70,8 @@ export default async function Page({
             corporis architecto ipsa aliquam possimus rerum magnam dolore.
             Debitis possimus vero excepturi aspernatur obcaecati labore corporis
             dolorum, velit temporibus.
-          </p>
-          <p className=" text-sm text-gray-500">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae
-            suscipit, vitae corporis architecto ipsa aliquam possimus rerum
-            magnam dolore. Debitis possimus vero excepturi aspernatur obcaecati
-            labore corporis dolorum, velit temporibus. Lorem ipsum, dolor sit
-            amet consectetur adipisicing elit. Molestiae suscipit, vitae
-            corporis architecto ipsa aliquam possimus rerum magnam dolore.
-            Debitis possimus vero excepturi aspernatur obcaecati labore corporis
-            dolorum, velit temporibus.
-          </p>
-          <p className=" text-sm text-gray-500">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae
-            suscipit, vitae corporis architecto ipsa aliquam possimus rerum
-            magnam dolore. Debitis possimus vero excepturi aspernatur obcaecati
-            labore corporis dolorum, velit temporibus. Lorem ipsum, dolor sit
-            amet consectetur adipisicing elit. Molestiae suscipit, vitae
-            corporis architecto ipsa aliquam possimus rerum magnam dolore.
-            Debitis possimus vero excepturi aspernatur obcaecati labore corporis
-            dolorum, velit temporibus.
-          </p>
-          <p className=" text-sm text-gray-500">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae
-            suscipit, vitae corporis architecto ipsa aliquam possimus rerum
-            magnam dolore. Debitis possimus vero excepturi aspernatur obcaecati
-            labore corporis dolorum, velit temporibus. Lorem ipsum, dolor sit
-            amet consectetur adipisicing elit. Molestiae suscipit, vitae
-            corporis architecto ipsa aliquam possimus rerum magnam dolore.
-            Debitis possimus vero excepturi aspernatur obcaecati labore corporis
-            dolorum, velit temporibus.
-          </p>
-          <Comments />
+          </p> */}
+          <Comments postId={blog?.id} />
         </div>
         {/* left */}
         <div className=" px-4 sticky max-w-[200px] flex flex-col gap-8 top-8 h-max">
@@ -127,7 +84,7 @@ export default async function Page({
                 alt=""
                 className=" min-h-[48px] min-w-[48px] rounded-full"
               />
-              <p className=" whitespace-nowrap text-md">First Name</p>
+              <AuthUserData id={blog?.authorId} />
             </div>
 
             <p className=" text-sm text-pretty text-gray-500 whitespace-nowrap">
