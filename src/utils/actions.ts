@@ -184,6 +184,22 @@ export const getNotFeatureBlog = async () => {
 };
 
 export const getBlogsByCategory = async (categoryId: string) => {
+  if (categoryId === "all") {
+    try {
+      const posts = await prisma.post.findMany({
+        where: {
+          is_publish: true,
+        },
+        include: {
+          Category: true, // Include category data (optional)
+        },
+      });
+      return posts;
+    } catch (error) {
+      console.error("Error fetching posts by categoryId:", error);
+      throw error;
+    }
+  }
   try {
     const posts = await prisma.post.findMany({
       where: {
@@ -317,7 +333,6 @@ export const addComment = async (
         postId: postId,
       },
     });
-    console.log(newComment);
 
     return newComment;
   } catch (error) {

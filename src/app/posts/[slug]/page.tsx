@@ -38,19 +38,8 @@ export default async function Page({
       </div>
       {/* left */}
       <div className=" px-4 mt-10 sticky max-w-[200px] flex flex-col gap-8 top-8 h-max">
-        <div className=" flex flex-col gap-2 text-sm text-blue-950">
-          <p>Search</p>
-          <div className=" bg-gray-100 p-2 rounded-full flex items-center gap-4">
-            <Image src={"/search.svg"} height={16} width={16} alt="" />
-            <input
-              type="text"
-              className=" bg-transparent outline-none text-[12px]"
-              placeholder="Search"
-            />
-          </div>
-        </div>
-        <SearchBlog/>
-        <CategoryFilter />
+        <SearchBlog />
+        <CategoryFilter paramsId={slug} />
         {/* <div className="flex flex-col gap-2 text-sm font-semibold text-blue-950">
           <p>Filters</p>
           <label className="flex items-center gap-4">

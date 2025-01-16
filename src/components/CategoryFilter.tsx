@@ -1,18 +1,23 @@
 "use client";
 import { getCategory } from "@/utils/actions";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState, useTransition } from "react";
 
-type Props = {};
+type Props = {
+  paramsId?: string;
+};
 
-const CategoryFilter = (props: Props) => {
+const CategoryFilter = ({ paramsId }: Props) => {
   const [category, setCategory] = useState<any>([]);
+  const [isPending, startTransition] = useTransition();
 
   const getAllCategory = async () => {
     try {
       const data = await getCategory();
-
-      setCategory(data?.category);
+      startTransition(() => {
+        setCategory(data?.category);
+      });
     } catch (error) {
       console.log(error);
     }
@@ -25,18 +30,31 @@ const CategoryFilter = (props: Props) => {
     <div>
       <div className=" flex flex-col gap-2 text-sm text-blue-950">
         <p>Categories</p>
-        <p>All</p>
-        {category !== undefined &&
+        <Link
+          className={`${
+            paramsId === "all" && "underline text-blue-800 "
+          } hover:underline`}
+          href={`/posts/all`}
+        >
+          All
+        </Link>
+        {isPending ? (
+          <p>Loading...</p>
+        ) : (
+          category !== undefined &&
           category.length > 0 &&
           category?.map((item: any, index: any) => (
             <Link
               href={`/posts/${item?.id}`}
               key={index}
-              className=" hover:text-blue-800 underline"
+              className={` ${
+                item?.id === paramsId && "underline text-blue-800 "
+              } hover:text-blue-800 hover:underline`}
             >
               {item?.name}
             </Link>
-          ))}
+          ))
+        )}
       </div>
     </div>
   );

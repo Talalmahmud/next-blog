@@ -1,21 +1,17 @@
-// filepath: /Users/talalmahmud/Desktop/my project/next-project/Front-End/blog/src/components/CustomReactQuill.jsx
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
+// import dynamic from "next/dynamic";
 
-const CustomReactQuill = ({
-  value,
-  onChange,
-}: {
-  value: any;
-  onChange: any;
-}) => {
-  return (
-    <ReactQuill
-      className=" bg-white rounded-2xl min-h-[400px]"
-      value={value}
-      onChange={onChange}
-    />
-  );
-};
+// const CustomReactQuill = dynamic(() => import("react-quill-new"), {
+//   ssr: false,
+// });
 
-export default CustomReactQuill;
+// const CustomTextarea = ({
+//   value,
+//   onChange,
+// }: {
+//   value: string;
+//   onChange: (value: string) => void;
+// }) => {
+//   return <CustomReactQuill value={value} onChange={onChange} />;
+// };
+
+// export default CustomTextarea;

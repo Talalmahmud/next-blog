@@ -26,7 +26,7 @@ const Introduction = () => {
           Thought-provoking articles that enrich your mind.
         </p>
       </div>
-      <Link className=" hidden md:block relative" href="write">
+      <Link className=" hidden md:block relative" href="/blog-write">
         <svg
           width="200"
           height="200"
