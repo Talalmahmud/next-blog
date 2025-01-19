@@ -136,7 +136,11 @@ export const getBlog = async () => {
   }
 };
 
-export const updatePostStatus = async (postId: string, newStatus: boolean) => {
+export const updatePostStatus = async (
+  postId: string,
+  newStatus: boolean,
+  featureStatus: boolean
+) => {
   try {
     const blogs = await prisma.post.update({
       where: {
@@ -144,6 +148,7 @@ export const updatePostStatus = async (postId: string, newStatus: boolean) => {
       },
       data: {
         is_publish: newStatus,
+        is_featrued: featureStatus,
       },
     });
 

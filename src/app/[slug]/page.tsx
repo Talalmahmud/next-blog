@@ -1,6 +1,6 @@
 import Comments from "@/components/Comments";
 import { prisma } from "@/lib/prisma";
-import { visiterCount } from "@/utils/actions";
+import { checkRole, visiterCount } from "@/utils/actions";
 import Image from "next/image";
 import AuthUserData from "../../components/AuthUserData";
 import { getTimeDifference } from "@/lib/common";
@@ -9,6 +9,9 @@ import Link from "next/link";
 import CategoryFilter from "@/components/CategoryFilter";
 import DeletePost from "@/components/DeletePost";
 import SearchBlog from "@/components/SearchBlog";
+import { redirect } from "next/navigation";
+
+
 
 export default async function Page({
   params,
@@ -24,6 +27,11 @@ export default async function Page({
       Category: true,
     },
   });
+  if (!blog) {
+    redirect("/");
+  }
+
+  const isAdmin = await checkRole("admin");
 
   if (blog) {
     await visiterCount(blog?.id);
@@ -134,7 +142,7 @@ export default async function Page({
                 </button>
               </div>
 
-              <DeletePost id={blog?.id || ""} />
+              {isAdmin && <DeletePost id={blog?.id || ""} />}
             </div>
           </div>
           <SearchBlog />

@@ -5,10 +5,13 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 
 import { createPost, getCategory } from "@/utils/actions";
 import Link from "next/link";
-import QuillEditor from "./ReactQuillRichText";
+// import QuillEditor from "./ReactQuillRichText";
+import { CldImage, CldUploadWidget } from "next-cloudinary";
+import Image from "next/image";
 
 const BlogForm = () => {
   const { isLoaded, isSignedIn, user } = useUser();
+  const [resource, setResource] = useState<any>("");
 
   const [category, setCategory] = useState<any[]>([]);
   const [isFeatured, setIsFeatured] = useState<boolean>(false);
@@ -16,10 +19,9 @@ const BlogForm = () => {
     title: "",
     short_description: "",
     categoryId: "",
-    cover_img: "",
   });
   const [loading, setLoading] = useState<boolean>(true);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState("testafdafasf");
 
   const handleContentChange = (newContent: string) => {
     setContent(newContent); // Update the state with editor content
@@ -53,7 +55,7 @@ const BlogForm = () => {
           blogData?.categoryId,
           blogData?.title,
           content,
-          blogData?.cover_img,
+          resource?.public_id,
           blogData?.short_description,
           isFeatured
         );
@@ -93,58 +95,98 @@ const BlogForm = () => {
   return (
     <div className="min-h-screen flex flex-col gap-6 pb-20">
       <p className="text-xl">Create A New Post</p>
-      <div>
-        <label
-          className="flex items-center gap-2 rounded-2xl"
-          htmlFor="featured"
-        >
+      <div className=" flex w-full justify-between">
+        <div className=" flex flex-1 flex-col gap-4">
+          <div>
+            <label
+              className="flex items-center gap-2 rounded-2xl"
+              htmlFor="featured"
+            >
+              <input
+                checked={isFeatured}
+                onChange={handleCheckbox}
+                type="checkbox"
+                id="featured"
+              />
+              Featured
+            </label>
+          </div>
+          {/* <div>
+            <label
+              className="px-4 py-2 cursor-pointer bg-white rounded-2xl inline-block"
+              htmlFor="imgUpload"
+            >
+              Upload a Cover Image
+            </label>
+            <input className="hidden" type="file" id="imgUpload" />
+          </div> */}
+          <div>
+            <CldUploadWidget
+              uploadPreset="chat-app"
+              onSuccess={(result: any, { widget }) => {
+                setResource(result); // { public_id, secure_url, etc }
+              }}
+              onQueuesEnd={(result, { widget }) => {
+                widget.close();
+              }}
+            >
+              {({ open }) => {
+                function handleOnClick() {
+                  setResource(undefined);
+                  open();
+                }
+                return (
+                  <button
+                    onClick={handleOnClick}
+                    className="px-4 py-2 cursor-pointer bg-white rounded-2xl inline-block"
+                  >
+                    Upload an Image
+                  </button>
+                );
+              }}
+            </CldUploadWidget>
+          </div>
           <input
-            checked={isFeatured}
-            onChange={handleCheckbox}
-            type="checkbox"
-            id="featured"
+            className="focus:text-blue-950 text-2xl font-semibold bg-transparent outline-none"
+            type="text"
+            required
+            value={blogData?.title}
+            onChange={(e) =>
+              setBlogData((prev) => ({ ...prev, title: e.target.value }))
+            }
+            placeholder="Add Post Title"
           />
-          Featured
-        </label>
-      </div>
-      <div>
-        <label
-          className="px-4 py-2 cursor-pointer bg-white rounded-2xl inline-block"
-          htmlFor="imgUpload"
-        >
-          Upload a Cover Image
-        </label>
-        <input className="hidden" type="file" id="imgUpload" />
-      </div>
-      <input
-        className="focus:text-blue-950 text-2xl font-semibold bg-transparent outline-none"
-        type="text"
-        required
-        value={blogData?.title}
-        onChange={(e) =>
-          setBlogData((prev) => ({ ...prev, title: e.target.value }))
-        }
-        placeholder="Add Post Title"
-      />
-      <div className="flex items-center gap-4">
-        <label htmlFor="category" className="text-md">
-          Choose a category:
-        </label>
-        <select
-          id="category"
-          value={blogData?.categoryId}
-          required
-          onChange={(e) =>
-            setBlogData((prev) => ({ ...prev, categoryId: e.target.value }))
-          }
-          className="outline-none px-4 py-2 bg-white text-black rounded-2xl"
-        >
-          {category?.map((item: any, index) => (
-            <option key={index} value={item?.id}>
-              {item?.name}
-            </option>
-          ))}
-        </select>
+          <div className="flex items-center gap-4">
+            <label htmlFor="category" className="text-md">
+              Choose a category:
+            </label>
+            <select
+              id="category"
+              value={blogData?.categoryId}
+              required
+              onChange={(e) =>
+                setBlogData((prev) => ({ ...prev, categoryId: e.target.value }))
+              }
+              className="outline-none px-4 py-2 bg-white text-black rounded-2xl"
+            >
+              {category?.map((item: any, index) => (
+                <option key={index} value={item?.id}>
+                  {item?.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        {/* image show */}
+        {resource?.info && (
+          <Image
+            src={resource?.info?.url}
+            height={400}
+            width={460}
+            className=" h-[400px] w-[460px]"
+            alt=" my image"
+          />
+        )}
       </div>
       <textarea
         required
@@ -160,7 +202,7 @@ const BlogForm = () => {
         className="px-4 py-2 text-md outline-none bg-white rounded-2xl"
       />
       {/* <CustomReactQuill value={value} onChange={setValue} /> */}
-      <QuillEditor setContent={setContent} />
+      {/* <QuillEditor setContent={setContent} /> */}
       <div>
         <button
           onClick={handleSubmit}
