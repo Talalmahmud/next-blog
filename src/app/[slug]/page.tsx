@@ -11,8 +11,6 @@ import DeletePost from "@/components/DeletePost";
 import SearchBlog from "@/components/SearchBlog";
 import { redirect } from "next/navigation";
 
-
-
 export default async function Page({
   params,
 }: {
@@ -32,6 +30,7 @@ export default async function Page({
   }
 
   const isAdmin = await checkRole("admin");
+  const isUser = await checkRole("user");
 
   if (blog) {
     await visiterCount(blog?.id);
@@ -87,7 +86,7 @@ export default async function Page({
             Debitis possimus vero excepturi aspernatur obcaecati labore corporis
             dolorum, velit temporibus.
           </p> */}
-          <Comments postId={blog?.id} />
+          {(isAdmin || isUser) && <Comments postId={blog?.id} />}
         </div>
         {/* left */}
         <div className=" px-4 sticky max-w-[200px] flex flex-col gap-8 top-8 h-max">

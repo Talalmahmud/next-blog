@@ -1,7 +1,6 @@
 "use client";
 import { getCategory } from "@/utils/actions";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState, useTransition } from "react";
 
 type Props = {
