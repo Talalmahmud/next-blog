@@ -6,9 +6,8 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { createPost, getCategory } from "@/utils/actions";
 import Link from "next/link";
 // import QuillEditor from "./ReactQuillRichText";
-import { CldImage, CldUploadWidget } from "next-cloudinary";
+import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
-import QuillEditor from "./ReactQuillRichText";
 
 const BlogForm = () => {
   const { isLoaded, isSignedIn, user } = useUser();
