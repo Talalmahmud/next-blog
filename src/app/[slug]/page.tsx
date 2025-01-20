@@ -25,6 +25,7 @@ export default async function Page({
       Category: true,
     },
   });
+  console.log(blog);
   if (!blog) {
     redirect("/");
   }
@@ -55,7 +56,7 @@ export default async function Page({
           <p className=" text-sm text-gray-500">{blog?.short_description}</p>
         </div>
         <Image
-          src={"/website.png"}
+          src={blog?.cover_img || "/website.png"}
           height={300}
           width={400}
           className="  object-cover h-[300px] w-[400px] aspect-video rounded-2xl"
@@ -65,16 +66,8 @@ export default async function Page({
       <div className=" w-full mt-10 flex gap-10">
         {/* right */}
 
-        <div className=" flex flex-col  gap-4 lg:gap-8">
+        <div className=" flex-1 flex flex-col  gap-4 lg:gap-8">
           <BlogContent content={blog?.content || ""} />
-
-          <Image
-            src={"/website.png"}
-            height={100}
-            width={100}
-            className="  object-cover w-full h-[400px] aspect-video rounded-2xl"
-            alt=""
-          />
 
           {/* <p className=" text-sm text-gray-500">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae

@@ -8,11 +8,12 @@ import Link from "next/link";
 // import QuillEditor from "./ReactQuillRichText";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
+import QuillEditor from "./ReactQuillRichText";
 
 const BlogForm = () => {
   const { isLoaded, isSignedIn, user } = useUser();
   const [resource, setResource] = useState<any>("");
-
+  const [isError, setIsError] = useState(false);
   const [category, setCategory] = useState<any[]>([]);
   const [isFeatured, setIsFeatured] = useState<boolean>(false);
   const [blogData, setBlogData] = useState({
@@ -47,25 +48,33 @@ const BlogForm = () => {
   };
 
   const handleSubmit = async () => {
-    if (user) {
-      try {
-        const userId = user?.id;
-        const postCreate = await createPost(
-          userId,
-          blogData?.categoryId,
-          blogData?.title,
-          content,
-          resource?.public_id,
-          blogData?.short_description,
-          isFeatured
-        );
-        if (postCreate) {
-          alert("New Blog is added.");
+    if (
+      (blogData?.title !== "" && blogData?.short_description !== "",
+      resource !== "",
+      content !== "")
+    ) {
+      if (user) {
+        try {
+          const userId = user?.id;
+          const postCreate = await createPost(
+            userId,
+            blogData?.categoryId,
+            blogData?.title,
+            content,
+            resource?.info?.url,
+            blogData?.short_description,
+            isFeatured
+          );
+          if (postCreate) {
+            alert("New Blog is added.");
+          }
+        } catch (error) {
+          alert("New Blog is not added.");
+          console.error(error);
         }
-      } catch (error) {
-        alert("New Blog is not added.");
-        console.error(error);
       }
+    } else {
+      setIsError(true);
     }
   };
 
@@ -136,12 +145,20 @@ const BlogForm = () => {
                   open();
                 }
                 return (
-                  <button
-                    onClick={handleOnClick}
-                    className="px-4 py-2 cursor-pointer bg-white rounded-2xl inline-block"
-                  >
-                    Upload an Image
-                  </button>
+                  <div className="">
+                    <button
+                      onClick={handleOnClick}
+                      className="px-4 py-2 cursor-pointer bg-white rounded-2xl inline-block"
+                    >
+                      Upload an Image
+                    </button>
+
+                    {isError && resource == "" && (
+                      <p className="text-[12px] italic text-red-600">
+                        image is not uploaded
+                      </p>
+                    )}
+                  </div>
                 );
               }}
             </CldUploadWidget>
@@ -156,6 +173,9 @@ const BlogForm = () => {
             }
             placeholder="Add Post Title"
           />
+          {isError && blogData?.title == "" && (
+            <p className="text-[12px] italic text-red-600">Title is empty</p>
+          )}
           <div className="flex items-center gap-4">
             <label htmlFor="category" className="text-md">
               Choose a category:
@@ -181,9 +201,9 @@ const BlogForm = () => {
         {resource?.info && (
           <Image
             src={resource?.info?.url}
-            height={400}
-            width={460}
-            className=" h-[400px] w-[460px]"
+            height={300}
+            width={260}
+            className=" h-[200px] w-[260px]"
             alt=" my image"
           />
         )}
@@ -201,8 +221,11 @@ const BlogForm = () => {
         placeholder="Add short descriptions"
         className="px-4 py-2 text-md outline-none bg-white rounded-2xl"
       />
+      {isError && blogData?.short_description == "" && (
+        <p className="text-[12px] italic text-red-600">Title is empty</p>
+      )}
       {/* <CustomReactQuill value={value} onChange={setValue} /> */}
-      {/* <QuillEditor setContent={setContent} /> */}
+      <QuillEditor setContent={setContent} />
       <div>
         <button
           onClick={handleSubmit}

@@ -1,0 +1,36 @@
+.rich-text-editor {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+}
+
+.toolbar {
+  display: flex;
+  gap: 5px;
+  padding: 5px;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #ccc;
+}
+
+.toolbar button,
+.toolbar label {
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+.toolbar button:hover,
+.toolbar label:hover {
+  background-color: #e7e7e7;
+}
+
+.editor {
+  padding: 10px;
+  min-height: 200px;
+  border: none;
+  outline: none;
+  overflow: auto;
+}
