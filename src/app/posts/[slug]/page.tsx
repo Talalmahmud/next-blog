@@ -3,9 +3,10 @@ import CategoryFilter from "@/components/CategoryFilter";
 import Comments from "@/components/Comments";
 import Postitem from "@/components/Postitem";
 import SearchBlog from "@/components/SearchBlog";
-import { getBlogsByCategory } from "@/utils/actions";
+import { getBlogsByCategory, getCategoryByID } from "@/utils/actions";
 import Image from "next/image";
 
+export const revalidate = 10;
 export default async function Page({
   params,
 }: {
@@ -14,6 +15,7 @@ export default async function Page({
   const slug = (await params).slug;
 
   const blog = await getBlogsByCategory(slug);
+  const blogCategory = await getCategoryByID(slug);
 
   return (
     <div className=" w-full flex justify-between gap-10">
@@ -22,7 +24,7 @@ export default async function Page({
       <div className=" flex flex-col gap-6">
         <div className="inline-flex w-auto">
           <p className="rounded-full px-6 py-2 bg-blue-800 text-white text-sm md:text-base font-semibold shadow-md hover:bg-blue-700 cursor-pointer transition-all duration-300">
-            {slug}
+            {blogCategory?.name}
           </p>
         </div>
         {blog?.map((item: any, index: any) => (

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getFeatureBlog } from "@/utils/actions";
+import { getFeatureBlog, getRecentBlog } from "@/utils/actions";
 import Link from "next/link";
 import Image from "next/image";
 import AuthUserData from "./AuthUserData";
@@ -11,7 +11,7 @@ const RecentPost = () => {
 
   const getFeaturePost = async () => {
     try {
-      const res = await getFeatureBlog();
+      const res = await getRecentBlog();
       setBlogList(res);
     } catch (error) {
       console.log(error);
@@ -38,7 +38,7 @@ const RecentPost = () => {
             </p>{" "}
             <div className=" flex items-center text-sm md:text-md gap-2 text-gray-400">
               <p>Written By</p>
-              <AuthUserData id={item?.authId} />
+              <AuthUserData id={item?.authorId} />
               <p className=" text-blue-800">Web Design</p>
 
               <span>{getTimeDifference(item?.createdAt)}</span>

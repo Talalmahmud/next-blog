@@ -173,6 +173,22 @@ export const getFeatureBlog = async () => {
   }
 };
 
+export const getRecentBlog = async () => {
+  try {
+    const blogs = await prisma.post.findMany({
+      where: { is_publish: true },
+      orderBy: { createdAt: "desc" },
+      include: {
+        Category: true, // Include the related category data
+      },
+    });
+
+    return blogs;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getNotFeatureBlog = async () => {
   try {
     const blogs = await prisma.post.findMany({
@@ -185,6 +201,24 @@ export const getNotFeatureBlog = async () => {
     return blogs;
   } catch (error) {
     return error;
+  }
+};
+
+export const getCategoryByID = async (id: string) => {
+  if (id === "all") {
+    return { name: "All" };
+  } else {
+    try {
+      const category = await prisma.category.findUnique({
+        where: {
+          id: id,
+        },
+      });
+      return category;
+    } catch (error) {
+      console.error("Error fetching posts by categoryId:", error);
+      throw error;
+    }
   }
 };
 

@@ -22,7 +22,7 @@ const BlogForm = () => {
     categoryId: "",
   });
   const [loading, setLoading] = useState<boolean>(true);
-  const [content, setContent] = useState("testafdafasf");
+  const [content, setContent] = useState("");
 
   const handleContentChange = (newContent: string) => {
     setContent(newContent); // Update the state with editor content
@@ -49,9 +49,10 @@ const BlogForm = () => {
 
   const handleSubmit = async () => {
     if (
-      (blogData?.title !== "" && blogData?.short_description !== "",
-      resource !== "",
-      content !== "")
+      blogData?.title !== "" &&
+      blogData?.short_description !== "" &&
+      resource !== "" &&
+      content !== ""
     ) {
       if (user) {
         try {
@@ -67,9 +68,11 @@ const BlogForm = () => {
           );
           if (postCreate) {
             alert("New Blog is added.");
+          } else {
+            alert("Failed to add new blog.");
           }
         } catch (error) {
-          alert("New Blog is not added.");
+          alert("An error occurred while adding the blog.");
           console.error(error);
         }
       }
@@ -225,7 +228,17 @@ const BlogForm = () => {
         <p className="text-[12px] italic text-red-600">Title is empty</p>
       )}
       {/* <CustomReactQuill value={value} onChange={setValue} /> */}
-      <QuillEditor setContent={setContent} />
+      <textarea
+        required
+        rows={8}
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="Add Blog Contents"
+        className="px-4 py-2 text-md outline-none bg-white rounded-2xl"
+      />
+      {isError && content == "" && (
+        <p className="text-[12px] italic text-red-600">Blog content is empty</p>
+      )}
       <div>
         <button
           onClick={handleSubmit}
