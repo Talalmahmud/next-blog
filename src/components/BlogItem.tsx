@@ -10,6 +10,7 @@ type Props = {
   title: string;
   createdAt: string;
   shortDesc: string;
+  img?:string;
 };
 
 const Blogitem = ({ postId, authorId, title, createdAt, shortDesc }: Props) => {

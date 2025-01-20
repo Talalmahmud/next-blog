@@ -24,7 +24,7 @@ const FeaturePost = () => {
       {/* left side */}
       <div className=" flex flex-col gap-4">
         <Image
-          src={"/website.png"}
+          src={featureList[0]?.cover_img || "/website.png"}
           height={100}
           width={100}
           className=" object-cover w-full rounded-2xl"
@@ -48,14 +48,14 @@ const FeaturePost = () => {
       </div>
       {/* right side */}
       <div className="flex flex-col gap-4">
-        {featureList.slice(0)?.map((item: any, index: number) => (
+        {featureList.slice(1)?.map((item: any, index: number) => (
           <Link
             href={`/${item.id}`}
             key={index}
             className=" flex gap-4 hover:bg-[#e6e6ff]/90 hover:shadow-md rounded-2xl"
           >
             <Image
-              src={"/website.png"}
+              src={item?.cover_img || "/website.png"}
               height={100}
               width={100}
               className=" object-cover aspect-video rounded-2xl w-1/3"

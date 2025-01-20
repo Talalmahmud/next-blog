@@ -26,7 +26,7 @@ const RecentPost = () => {
       {blogList?.map((item: any, index: any) => (
         <div key={index} className=" flex flex-col md:flex-row gap-4">
           <Image
-            src={"/website.png"}
+            src={item?.cover_img || "/website.png"}
             height={100}
             width={100}
             className=" block lg:hidden object-cover w-full aspect-video rounded-2xl"

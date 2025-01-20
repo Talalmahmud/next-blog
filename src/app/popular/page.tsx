@@ -19,6 +19,7 @@ export default async function Page() {
             <Blogitem
               key={index}
               postId={item?.id}
+              img={item?.cover_img}
               authorId={item?.authorId}
               title={item?.title}
               createdAt={item?.createdAt}

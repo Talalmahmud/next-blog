@@ -6,7 +6,7 @@ import RecentPost from "@/components/RecentPost";
 
 export default function Home() {
   return (
-    <div className="">
+    <div className=" pb-20">
       <BreadCrum />
 
       {/* navbar */}
